@@ -1,0 +1,17 @@
+<div class="chat">
+  <div class="chat__header">
+    <h2>Общий чатик</h2>
+    <a href="">Домой</a>
+  </div>
+  <ul class="chat__messages" id="chat-scroll-element">
+    <li class="chat__messages__message {{ username === message.sender ? 'right_message' : 'left_message' }}"
+        *ngFor="let message of messages">
+      <span class="chat__messages__message__sender">{{ message.sender }}:</span>
+      <p class="chat__messages__message__text">{{ message.text }}</p>
+    </li>
+  </ul>
+  <div class="chat__inputs">
+    <textarea class="chat__inputs__textarea" [(ngModel)]="inputMessage" placeholder="Ваше сообщение"></textarea>
+    <button class="chat__inputs__button" (click)="send()">Отправить</button>
+  </div>
+</div>

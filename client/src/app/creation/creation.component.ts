@@ -39,6 +39,10 @@ export class CreationComponent implements AfterViewInit {
             this.color = response.data.color
             this.favorite_food = response.data.favorite_food
           }
+        }).catch((error) => {
+          if (error.response.status === 403){
+            window.location.href = '/'
+          }
         })
       }
     });
@@ -85,6 +89,9 @@ export class CreationComponent implements AfterViewInit {
         window.location.href = '/'
       }
     }).catch((error) => {
+      if (error.response.status === 403){
+        window.location.href = '/'
+      }
       showErrorFromResponse(error.response.data)
       showDetailErrorFromResponse(error.response.data, 'detail_error')
     })
