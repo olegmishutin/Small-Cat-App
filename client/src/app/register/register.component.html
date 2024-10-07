@@ -1,20 +1,20 @@
-<div class="auth">
-  <div class="auth__box">
+<div class="form">
+  <div class="form__box">
     <h1>Регистрация</h1>
-    <div class="auth__inputs">
-      <div class="auth__inputs__box">
+    <div class="form__inputs">
+      <div class="form__inputs__box">
         <span id="username_error"></span>
-        <input type="text" name="username" id="username" placeholder="Имя пользователя">
+        <input [(ngModel)]="username" type="text" name="username" id="username" placeholder="Имя пользователя">
       </div>
-      <div class="auth__inputs__box">
+      <div class="form__inputs__box">
         <span id="email_error"></span>
-        <input type="email" name="email" id="email" placeholder="Email">
+        <input [(ngModel)]="email" type="email" name="email" id="email" placeholder="Email">
       </div>
-      <div class="auth__inputs__box">
+      <div class="form__inputs__box">
         <span id="password_error"></span>
-        <input type="password" name="password" id="password" placeholder="Пароль">
+        <input [(ngModel)]="password" type="password" name="password" id="password" placeholder="Пароль">
       </div>
-      <button class="auth__inputs__button">Зарегистрироваться</button>
+      <button class="form__inputs__button" (click)="register()">Зарегистрироваться</button>
     </div>
   </div>
 </div>

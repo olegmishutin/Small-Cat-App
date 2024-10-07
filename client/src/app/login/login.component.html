@@ -1,16 +1,17 @@
-<div class="auth">
-  <div class="auth__box">
+<div class="form">
+  <div class="form__box">
     <h1>Авторизация</h1>
-    <div class="auth__inputs">
-      <div class="auth__inputs__box">
+    <div class="form__inputs">
+      <div class="form__inputs__box">
         <span id="username_error"></span>
-        <input type="text" name="username" id="username" placeholder="Имя пользователя">
+        <input [(ngModel)]="username" type="text" name="username" id="username" placeholder="Имя пользователя">
       </div>
-      <div class="auth__inputs__box">
+      <div class="form__inputs__box">
         <span id="password_error"></span>
-        <input type="password" name="password" id="password" placeholder="Пароль">
+        <input [(ngModel)]="password" type="password" name="password" id="password" placeholder="Пароль">
       </div>
-      <button class="auth__inputs__button">Войти</button>
+      <p class="form__inputs__detail" id="detail_error"></p>
+      <button class="form__inputs__button" (click)="login()">Войти</button>
     </div>
   </div>
 </div>

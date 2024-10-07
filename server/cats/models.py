@@ -1,7 +1,8 @@
+import os
 from django.db import models
 from django.db.models import Q, F
 from django.contrib.auth import get_user_model
-from .validators import check_cat_age, check_hair_color_is_hex
+from .validators import check_cat_age
 
 
 def upload_cat_image_to(instance, file):
@@ -14,10 +15,10 @@ class Cat(models.Model):
     name = models.CharField('Имя', max_length=128)
     age = models.PositiveSmallIntegerField('Возраст', validators=[check_cat_age])
     breed = models.CharField('Порода', max_length=128)
-    hex_hair_color = models.CharField('Цвет кошки', max_length=6, validators=[check_hair_color_is_hex])
-    favorite_food = models.CharField('Любимая еда', max_length=128)
+    color = models.CharField('Цвет', max_length=96)
+    favorite_food = models.TextField('Любимая еда', null=True, blank=True)
 
-    photo = models.ImageField('Фотография', upload_to=upload_cat_image_to)
+    _photo = models.ImageField('Фотография', upload_to=upload_cat_image_to, db_column='photo', null=True, blank=True)
 
     class Meta:
         db_table = 'Cat'
@@ -30,6 +31,23 @@ class Cat(models.Model):
                 violation_error_message='Возраст не может быть меньше 1 и больше 30'
             )
         ]
+
+    @property
+    def photo(self):
+        return self._photo
+
+    @photo.setter
+    def photo(self, file):
+        if file:
+            if self._photo and os.path.exists(self._photo.path):
+                os.remove(self._photo.path)
+            self._photo = file
+
+    def delete(self, using=None, keep_parents=False):
+        if self._photo and os.path.exists(self._photo.path):
+            os.remove(self._photo.path)
+
+        return super().delete(using, keep_parents)
 
     def __str__(self):
         return self.name

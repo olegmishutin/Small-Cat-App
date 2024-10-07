@@ -1,0 +1,27 @@
+.form__inputs__box textarea{
+  padding: 10px;
+  resize: none;
+  height: 100px;
+}
+
+.form__inputs__box textarea,
+.form__inputs__box input{
+  border: 2px solid #b95db9;
+}
+
+.photo__picker input{
+  display: none;
+}
+
+.photo__picker{
+  background-color: #4c4cee;
+  color: white;
+  padding: 10px;
+  width: 250px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.form__inputs__button{
+  background: linear-gradient(135deg, #4c4cee, #b95db9 70%);
+}
