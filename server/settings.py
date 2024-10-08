@@ -11,24 +11,27 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
-from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 SERVER_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(SERVER_DIR / '.env')
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    from dotenv import load_dotenv
+
+    load_dotenv(SERVER_DIR / '.env')
+
+SECRET_KEY = os.getenv('SECRET_KEY') if DEBUG else os.environ.get('SECRET_KEY')
+
+ALLOWED_HOSTS = ["*"]
 
 CORS_ALLOW_ORIGIN_ALL = True
 CSRF_TRUSTED_ORIGINS = [
@@ -106,11 +109,11 @@ WSGI_APPLICATION = 'server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT')
+        'NAME': os.getenv('DB_NAME') if DEBUG else os.environ.get('PGDATABASE'),
+        'USER': os.getenv('DB_USER') if DEBUG else os.environ.get('PGUSER'),
+        'PASSWORD': os.getenv('DB_PASSWORD') if DEBUG else os.environ.get('PGPASSWORD'),
+        'HOST': os.getenv('DB_HOST') if DEBUG else os.environ.get('PGHOST'),
+        'PORT': os.getenv('DB_PORT') if DEBUG else os.environ.get('PGPORT')
     }
 }
 
