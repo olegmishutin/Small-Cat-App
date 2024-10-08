@@ -35,7 +35,8 @@ ALLOWED_HOSTS = ["*"]
 
 CORS_ALLOW_ORIGIN_ALL = True
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:4200'
+    'http://localhost:4200',
+    'https://small-cat-app-production.up.railway.app'
 ]
 
 # Application definition
