@@ -16,7 +16,6 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 SERVER_DIR = Path(__file__).resolve().parent.parent
-BASE_DIR = SERVER_DIR.parent
 
 load_dotenv(SERVER_DIR / '.env')
 
@@ -85,7 +84,7 @@ ROOT_URLCONF = 'server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'client/dist/client/browser'],
+        'DIRS': [SERVER_DIR / 'dist/browser'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -149,7 +148,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'client/dist/client/browser'
+    SERVER_DIR / 'dist/browser'
 ]
 
 MEDIA_URL = 'media/'
