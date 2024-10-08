@@ -22,9 +22,14 @@ SERVER_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+if DEBUG:
+    from dotenv import load_dotenv
+
+    load_dotenv(SERVER_DIR / '.env')
+
+SECRET_KEY = os.getenv('SECRET_KEY') if DEBUG else os.environ.get('SECRET_KEY')
 
 ALLOWED_HOSTS = ["*"]
 
@@ -43,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
     'channels',
     'corsheaders',
     'rest_framework',
@@ -59,13 +65,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [os.environ.get('REDIS_URL')],
+            'hosts': [os.getenv('REDIS_URL') if DEBUG else os.environ.get('REDIS_URL')],
             'symmetric_encryption_keys': [SECRET_KEY]
         }
     }
@@ -104,11 +111,11 @@ WSGI_APPLICATION = 'server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('PGDATABASE'),
-        'USER': os.environ.get('PGUSER'),
-        'PASSWORD': os.environ.get('PGPASSWORD'),
-        'HOST': os.environ.get('PGHOST'),
-        'PORT': os.environ.get('PGPORT')
+        'NAME': os.getenv('DB_NAME') if DEBUG else os.environ.get('PGDATABASE'),
+        'USER': os.getenv('DB_USER') if DEBUG else os.environ.get('PGUSER'),
+        'PASSWORD': os.getenv('DB_PASSWORD') if DEBUG else os.environ.get('PGPASSWORD'),
+        'HOST': os.getenv('DB_HOST') if DEBUG else os.environ.get('PGHOST'),
+        'PORT': os.getenv('DB_PORT') if DEBUG else os.environ.get('PGPORT')
     }
 }
 
@@ -149,6 +156,7 @@ STATICFILES_DIRS = [
     SERVER_DIR / 'dist/browser'
 ]
 STATIC_ROOT = os.path.join(SERVER_DIR, 'staticfiles')
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = SERVER_DIR / 'media/'
