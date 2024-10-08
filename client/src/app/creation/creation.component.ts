@@ -40,7 +40,18 @@ export class CreationComponent implements AfterViewInit {
             this.favorite_food = response.data.favorite_food
           }
         }).catch((error) => {
-          if (error.response.status === 403){
+          if (error.response.status === 403) {
+            window.location.href = '/'
+          }
+        })
+      } else {
+        axios({
+          method: 'GET',
+          url: '/api/me/'
+        }).then((response) => {
+          return null
+        }).catch((error) => {
+          if (error.response.status === 403) {
             window.location.href = '/'
           }
         })
@@ -89,7 +100,7 @@ export class CreationComponent implements AfterViewInit {
         window.location.href = '/'
       }
     }).catch((error) => {
-      if (error.response.status === 403){
+      if (error.response.status === 403) {
         window.location.href = '/'
       }
       showErrorFromResponse(error.response.data)

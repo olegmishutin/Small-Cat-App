@@ -1,3 +1,8 @@
+.form{
+  flex-direction: column;
+  gap: 20px;
+}
+
 .form__inputs__box textarea{
   padding: 10px;
   resize: none;

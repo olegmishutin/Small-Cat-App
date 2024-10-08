@@ -58,6 +58,9 @@
   height: 300px;
   border-radius: 20px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .menu__list__element__photo img {
@@ -83,20 +86,8 @@
   text-align: center;
 }
 
-.menu__nothing__image {
-  width: 250px;
-  height: 250px;
-}
-
-.menu__nothing__image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .menu__nothing__text {
   color: #b95db9;
-  margin-top: 30px;
 }
 
 .menu__list__element__buttons{

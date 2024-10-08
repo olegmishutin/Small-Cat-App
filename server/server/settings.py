@@ -16,6 +16,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 SERVER_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = SERVER_DIR.parent
 
 load_dotenv(SERVER_DIR / '.env')
 
@@ -73,12 +74,18 @@ CHANNEL_LAYERS = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer'
+    ]
+}
+
 ROOT_URLCONF = 'server.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'client/dist/client/browser'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -141,6 +148,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'client/dist/client/browser'
+]
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = SERVER_DIR / 'media/'
