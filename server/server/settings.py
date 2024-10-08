@@ -11,28 +11,32 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
-from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 SERVER_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(SERVER_DIR / '.env')
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    from dotenv import load_dotenv
+
+    load_dotenv(SERVER_DIR / '.env')
+
+SECRET_KEY = os.getenv('SECRET_KEY') if DEBUG else os.environ.get('SECRET_KEY')
+
+ALLOWED_HOSTS = ["*"]
 
 CORS_ALLOW_ORIGIN_ALL = True
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:4200'
+    'http://localhost:4200',
+    'https://small-cat-app-production.up.railway.app'
 ]
 
 # Application definition
@@ -45,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
     'channels',
     'corsheaders',
     'rest_framework',
@@ -61,13 +66,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [os.getenv('REDIS_URL')],
+            'hosts': [os.getenv('REDIS_URL') if DEBUG else os.environ.get('REDIS_URL')],
             'symmetric_encryption_keys': [SECRET_KEY]
         }
     }
@@ -105,12 +111,12 @@ WSGI_APPLICATION = 'server.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT')
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME') if DEBUG else os.environ.get('PGDATABASE'),
+        'USER': os.getenv('DB_USER') if DEBUG else os.environ.get('PGUSER'),
+        'PASSWORD': os.getenv('DB_PASSWORD') if DEBUG else os.environ.get('PGPASSWORD'),
+        'HOST': os.getenv('DB_HOST') if DEBUG else os.environ.get('PGHOST'),
+        'PORT': os.getenv('DB_PORT') if DEBUG else os.environ.get('PGPORT')
     }
 }
 
@@ -150,6 +156,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     SERVER_DIR / 'dist/browser'
 ]
+STATIC_ROOT = os.path.join(SERVER_DIR, 'staticfiles')
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = SERVER_DIR / 'media/'

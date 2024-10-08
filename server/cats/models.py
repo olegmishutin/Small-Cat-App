@@ -1,4 +1,3 @@
-import os
 from django.db import models
 from django.db.models import Q, F
 from django.contrib.auth import get_user_model
@@ -18,8 +17,6 @@ class Cat(models.Model):
     color = models.CharField('Цвет', max_length=96)
     favorite_food = models.TextField('Любимая еда', null=True, blank=True)
 
-    _photo = models.ImageField('Фотография', upload_to=upload_cat_image_to, db_column='photo', null=True, blank=True)
-
     class Meta:
         db_table = 'Cat'
         verbose_name = 'Кошка'
@@ -31,23 +28,6 @@ class Cat(models.Model):
                 violation_error_message='Возраст не может быть меньше 1 и больше 30'
             )
         ]
-
-    @property
-    def photo(self):
-        return self._photo
-
-    @photo.setter
-    def photo(self, file):
-        if file:
-            if self._photo and os.path.exists(self._photo.path):
-                os.remove(self._photo.path)
-            self._photo = file
-
-    def delete(self, using=None, keep_parents=False):
-        if self._photo and os.path.exists(self._photo.path):
-            os.remove(self._photo.path)
-
-        return super().delete(using, keep_parents)
 
     def __str__(self):
         return self.name

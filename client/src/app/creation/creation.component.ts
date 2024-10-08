@@ -19,7 +19,6 @@ export class CreationComponent implements AfterViewInit {
   breed: string = ''
   color: string = ''
   favorite_food: string = ''
-  photo: any = ''
 
   constructor(private route: ActivatedRoute) {
   }
@@ -59,16 +58,8 @@ export class CreationComponent implements AfterViewInit {
     });
   }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      this.photo = input.files[0];
-    }
-  }
-
   action() {
     hideError([
-      'photo',
       'name',
       'age',
       'breed',
@@ -83,10 +74,6 @@ export class CreationComponent implements AfterViewInit {
     formData.append('breed', this.breed)
     formData.append('color', this.color)
     formData.append('favorite_food', this.favorite_food)
-
-    if (this.photo) {
-      formData.append('photo', this.photo)
-    }
 
     axios({
       method: this.id ? 'PUT' : 'POST',

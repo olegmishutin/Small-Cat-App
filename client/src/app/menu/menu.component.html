@@ -8,10 +8,6 @@
   </header>
   <ul class="menu__list">
     <li class="menu__list__element" *ngFor="let item of data">
-      <div class="menu__list__element__photo">
-        <img *ngIf="item.photo" src="{{ item.photo }}" alt="Фото">
-        <p *ngIf="!item.photo">Нет картинки</p>
-      </div>
       <p><span>Имя:</span> {{ item.name }}</p>
       <p><span>Возраст:</span> {{ item.age }}</p>
       <p><span>Порода:</span> {{ item.breed }}</p>

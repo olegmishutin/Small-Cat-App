@@ -29,7 +29,7 @@ export class ChatComponent implements AfterViewInit {
       }
     })
 
-    this.socket = new WebSocket('ws://localhost:8000/ws/chat/')
+    this.socket = new WebSocket('wss://small-cat-app-production.up.railway.app/ws/chat/')
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data)
 
