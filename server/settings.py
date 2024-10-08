@@ -153,7 +153,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     SERVER_DIR / 'dist/browser'
 ]
-STATIC_ROOT = SERVER_DIR / "staticfiles"
+STATIC_ROOT = os.path.join(SERVER_DIR, 'staticfiles')
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = SERVER_DIR / 'media/'
