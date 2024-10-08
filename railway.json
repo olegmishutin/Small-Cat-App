@@ -5,6 +5,6 @@
     "python": "3.10"
   },
   "deploy": {
-    "startCommand": "python manage.py migrate && python manage.py collectstatic --noinput"
+    "startCommand": "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn server.asgi:application -k uvicorn.workers.UvicornWorker"
   }
 }
