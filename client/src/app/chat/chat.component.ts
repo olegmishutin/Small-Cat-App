@@ -11,6 +11,8 @@ import {NgForOf} from '@angular/common';
   styleUrl: './chat.component.css'
 })
 export class ChatComponent implements AfterViewInit {
+  debug: boolean = true
+
   username: string = ''
   messages: any = []
   socket: WebSocket | null = null
@@ -29,7 +31,8 @@ export class ChatComponent implements AfterViewInit {
       }
     })
 
-    this.socket = new WebSocket('wss://small-cat-app-production.up.railway.app/ws/chat/')
+    this.socket = new WebSocket(this.debug ? 'ws://localhost:8000/ws/chat/' : 'wss://small-cat-app-production.up.railway.app/ws/chat/'
+    )
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data)
 
